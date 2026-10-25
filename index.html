@@ -81,6 +81,9 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 .sec{font-size:20px;font-weight:700;margin:22px 0 -4px}
 .row{width:100%;min-height:56px;display:flex;align-items:center;gap:12px;padding:10px 0;border:0;border-bottom:1px solid #e3e3e8;background:none;text-align:left;color:#1c1c1e}
 .row:last-child{border-bottom:0}button.row:active{opacity:.5}
+.row.miss .rowtitle{color:#ff3b30}
+.udot{width:10px;height:10px;border-radius:50%;background:#087aff;flex-shrink:0;margin-right:-4px}
+.udot.r{visibility:hidden}
 .rowic{width:30px;height:30px;border-radius:50%;background:#e9e9ee;display:grid;place-items:center;flex-shrink:0}
 .row.sm{min-height:48px}
 .avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;font-size:17px;flex-shrink:0}
@@ -198,6 +201,7 @@ var $=function(id){return document.getElementById(id)};
 
 /* =========================================================
    설정 영역 (여기만 수정하면 돼요)
+   기준 시각은 "10월 21일 월요일 오전 3:17" 이에요.
    ========================================================= */
 var PASSCODE='0617';   // 잠금 해제 비밀번호
 
@@ -216,17 +220,39 @@ var PHOTOS=[
   'images/photo4.jpeg'
 ];
 
+// 이미 진행된 문자 내역: ['in'=상대, 'out'=나, '내용', '날짜표시(선택)']
+// 날짜표시는 '어제 오후 11:48', '오늘 오전 3:14' 처럼 써요.
+// 마지막 날짜표시가 메시지 목록의 시간이 되고('어제' 또는 '오전 3:14'), 상대의 마지막 문자가 알림 내용이 돼요.
+var chat={
+  J:[
+    ['in','자고 있었어? 괜찮아, 더 자도 돼.','어제 오후 11:48'],
+    ['out','이상한 문자가 계속 와.'],
+    ['in','신경 쓰지 마. 여긴 안전해. 아무 일도 없어.'],
+    ['out','너무 오래 자는 것 같아...'],
+    ['in','그래도 괜찮아. 다른 건 잊어도 돼.']
+  ],
+  W:[
+    ['in','내 말 들려?','어제 오전 3:17'],
+    ['out','누구세요?'],
+    ['in','나오면 말해줄게.'],
+    ['in','빨리 일어나. 거기 오래 있으면 안 돼.','오늘 오전 3:14']
+  ]
+};
+
 // 잠금화면에 이미 와 있는 알림 (위에 있을수록 최신)
-// app: messages / phone / clock 중 하나, title: 굵은 글씨, body: 내용, time: 시간 표시
-// open: 알림을 탭하고 암호를 풀면 열리는 곳 → 'thread:W' (W와의 대화), 'thread:J', 'app:phone', 'app:clock' ...
+// app: messages / phone / clock, title: 굵은 글씨, time: 시간 표시
+// messages 알림은 body를 쓰지 않아도 돼요(대화 속 상대의 마지막 문자가 자동으로 들어가요).
+// 시간은 위 chat과 맞춰요: W는 오늘 오전 3:14 → '3분 전', J는 어제 → '어제'
+// open: 알림을 탭하고 암호를 풀면 열리는 곳 → 'thread:W', 'thread:J', 'app:phone', 'app:clock'
 var NOTIFS=[
-  {app:'messages',title:'W',body:'빨리 일어나. 거기 오래 있으면 안 돼.',time:'3분 전',open:'thread:W'},
   {app:'clock',title:'알람',body:'일어나',time:'오전 3:17',open:'app:clock'},
-  {app:'messages',title:'J',body:'그래도 괜찮아. 다른 건 잊어도 돼.',time:'어제',open:'thread:J'},
+  {app:'messages',title:'W',time:'3분 전',open:'thread:W'},
+  {app:'messages',title:'J',time:'어제',open:'thread:J'},
   {app:'phone',title:'W',body:'부재중 전화',time:'어제',open:'app:phone'}
 ];
 
 // 시계 앱 알람 (끌 수 없음): [시각, 오전/오후, 이름]
+// 위 알림의 '알람 · 일어나 · 오전 3:17'과 첫 줄이 같아요.
 var ALARMS=[
   ['3:17','오전','일어나'],
   ['3:17','오전','아직도 자고 있어?'],
@@ -240,23 +266,6 @@ var SEARCHES=[
   ['어제',['같은 꿈 반복 이유','꿈속에서 죽으면 어떻게 되나','가위눌림 원인','꿈에 계속 나오는 남자','검정 옷 남자 꿈']],
   ['지난주',['꿈과 현실 구분하는 법','창문 잠갔는데 아침에 열려 있음','새벽에 이상한 소리']]
 ];
-
-// 이미 진행된 문자 내역: ['in'=상대, 'out'=나, '내용', '날짜표시(선택)']
-var chat={
-  J:[
-    ['in','자고 있었어? 괜찮아, 더 자도 돼.','어제 오후 11:48'],
-    ['out','이상한 문자가 계속 와.'],
-    ['in','신경 쓰지 마. 여긴 안전해. 아무 일도 없어.'],
-    ['out','너무 오래 자는 것 같아...'],
-    ['in','그래도 괜찮아. 다른 건 잊어도 돼.']
-  ],
-  W:[
-    ['in','내 말 들려?','어제 오전 3:17'],
-    ['out','누구세요?'],
-    ['in','나오면 말해줄게.'],
-    ['in','빨리 일어나. 거기 오래 있으면 안 돼.']
-  ]
-};
 
 // 입력칸 위에 뜨는 추천 문장 (탭하면 바로 전송, 보낸 문장은 사라짐)
 // 아래 RULES의 키워드가 들어 있어야 답장이 와요
@@ -308,11 +317,44 @@ var INCOMING_DELAY=2200, INCOMING_RING=6000;
 var required=['photo','message','note','call','setting'];
 /* ========================= 설정 끝 ========================= */
 
+var INIT_CHAT=JSON.parse(JSON.stringify(chat));
 var clues=new Set(),entered='',wrong=0,curApp=null,usedSug={J:{},W:{}};
 var callT=null,callK=null,callN={J:0,W:0},actx=null,ringNode=null;
-var missed=false,incT=[],lockNotifs=NOTIFS.slice(),pendingOpen=null;
+var missed=false,incT=[],pendingOpen=null;
+var stamp={J:null,W:null},order=['W','J'],callLog=[];
 var phone=$('phone');
 var PHONE_PATH='M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z';
+
+/* ----- 문자 시간·읽음 상태 (알림과 앱 안 내용을 맞춰줘요) ----- */
+function lastLabel(k){var l='';chat[k].forEach(function(m){if(m[2])l=m[2]});return l}
+function listTime(k){
+  if(stamp[k])return stamp[k];
+  var l=lastLabel(k);
+  if(l.indexOf('어제')===0)return '어제';
+  return l.replace(/^오늘\s*/,'');
+}
+function lastIn(k){var r='';chat[k].forEach(function(m){if(m[0]==='in')r=m[1]});return r}
+function buildNotifs(){
+  return NOTIFS.map(function(n){
+    var c={};for(var x in n)c[x]=n[x];
+    if(c.app==='messages'&&!c.body)c.body=lastIn(c.title);
+    return c;
+  });
+}
+var lockNotifs=buildNotifs();
+function isUnread(k){return lockNotifs.some(function(n){return n.app==='messages'&&n.title===k})}
+function pushMsg(k,dir,text){
+  var m=[dir,text];
+  if(!stamp[k]){
+    m.push('오늘 오전 3:17');stamp[k]='오전 3:17';
+    var b=$('bubbles');
+    if(b&&b.dataset.k===k&&curApp==='messages'){
+      var c=document.createElement('div');c.className='center';c.textContent='오늘 오전 3:17';b.appendChild(c);
+    }
+  }
+  chat[k].push(m);
+  order=[k].concat(order.filter(function(x){return x!==k}));
+}
 
 /* ----- 아이콘 ----- */
 function svg(i){return '<svg viewBox="0 0 24 24">'+i+'</svg>'}
@@ -353,6 +395,10 @@ function renderBadges(){
 }
 function clearNotifs(id){
   lockNotifs=lockNotifs.filter(function(n){return n.app!==id});
+  renderNotifs();renderBadges();
+}
+function clearThread(k){
+  lockNotifs=lockNotifs.filter(function(n){return !(n.app==='messages'&&n.title===k)});
   renderNotifs();renderBadges();
 }
 function tapNotif(i){
@@ -431,7 +477,7 @@ function setPage(html){
 function openApp(id,el){
   if(id==='camera'){toast('카메라','꿈 속은 기록할 수 없어요');return}
   if(id==='archive'&&required.every(function(c){return clues.has(c)})){switchScreen('ending');return}
-  clearNotifs(id);
+  if(id!=='messages')clearNotifs(id);
   var p=phone.getBoundingClientRect(),r=el.getBoundingClientRect(),s=$('appscreen');
   s.style.transformOrigin=(r.left+r.width/2-p.left)+'px '+(r.top+r.height/2-p.top)+'px';
   s.classList.toggle('dk',id==='maps');
@@ -522,13 +568,15 @@ function safariResult(i){
 
 /* ----- 메시지 ----- */
 function messagesView(){
-  var rows=['W','J'].map(function(k){
+  var rows=order.map(function(k){
     var l=chat[k][chat[k].length-1];
-    return row(k,esc(l[1]),av(k),"thread('"+k+"')",'어제');
+    var dot='<span class="udot'+(isUnread(k)?'':' r')+'"></span>';
+    return row(k,esc(l[1]),dot+av(k),"thread('"+k+"')",listTime(k));
   });
   setPage(tb('홈')+ttl('메시지')+grp(rows));
 }
 function thread(k){
+  clearThread(k);
   if(k==='W')clues.add('message');
   var last='';
   var bs=chat[k].map(function(m){
@@ -560,13 +608,13 @@ function sendReply(text){
   if(!msg)return;
   if(!text&&i)i.value='';
   var k=$('bubbles').dataset.k;
-  addBubble(msg,'out');chat[k].push(['out',msg]);
+  pushMsg(k,'out',msg);addBubble(msg,'out');
   var hit=RULES[k].filter(function(r){return r[0].test(msg)})[0];
   var ans=hit?hit[1]:fallback[k];
   setTimeout(function(){
     var t=addBubble('•••','in');t.classList.add('typing');
     setTimeout(function(){
-      t.classList.remove('typing');t.textContent=ans;chat[k].push(['in',ans]);
+      t.classList.remove('typing');t.textContent=ans;pushMsg(k,'in',ans);
       if(hit&&hit[2])clues.add(hit[2]);
       $('content').scrollTo({top:100000,behavior:'smooth'});
     },900+Math.min(ans.length*30,900));
@@ -575,15 +623,18 @@ function sendReply(text){
 
 /* ----- 전화 / 연락처 ----- */
 function phoneView(){
-  setPage(tb('홈')+ttl('최근 통화')+grp([
-    row('알 수 없음','수신 전화',unk,'callDetail()','오전 3:17'),
-    row('W','부재중 전화',av('W'),"contactDetail('W')",'어제'),
-    row('J','발신 전화',av('J'),"contactDetail('J')",'어제')
-  ]));
+  var rows=[];
+  callLog.forEach(function(k){rows.push(row(k,'발신 전화',av(k),"contactDetail('"+k+"')",'오전 3:17'))});
+  if(missed)rows.push(row('알 수 없음','부재중 전화',unk,'callDetail(1)','오전 3:17','miss'));
+  rows.push(row('알 수 없음','수신 전화',unk,'callDetail(0)','어제'));
+  rows.push(row('W','부재중 전화',av('W'),"contactDetail('W')",'어제','miss'));
+  rows.push(row('J','발신 전화',av('J'),"contactDetail('J')",'어제'));
+  setPage(tb('홈')+ttl('최근 통화')+grp(rows));
 }
-function callDetail(){
+function callDetail(today){
   clues.add('call');
-  setPage(tb('전화','phoneView()')+'<div class="bigcenter"><div class="avatar big" style="background:#c7c7cc">?</div><h2 style="margin:0">알 수 없음</h2><p>휴대전화 · 오전 3:17 수신</p><button class="action" style="flex:none;border-radius:20px;padding:11px 24px" onclick="toast(\'전화\',\'통화를 연결할 수 없어요.\')">전화 걸기</button></div>');
+  var sub=today?'휴대전화 · 부재중 전화 · 오전 3:17':'휴대전화 · 수신 전화 · 어제 오전 3:17';
+  setPage(tb('전화','phoneView()')+'<div class="bigcenter"><div class="avatar big" style="background:#c7c7cc">?</div><h2 style="margin:0">알 수 없음</h2><p>'+sub+'</p><button class="action" style="flex:none;border-radius:20px;padding:11px 24px" onclick="toast(\'전화\',\'통화를 연결할 수 없어요.\')">전화 걸기</button></div>');
 }
 function contactsView(){
   setPage(tb('홈')+ttl('연락처')+'<div class="search" style="margin-bottom:6px">⌕ 검색</div>'+grp(['J','W'].map(function(k){return row(k,'',av(k),"contactDetail('"+k+"')")})));
@@ -615,6 +666,7 @@ function cancelCall(){
 }
 function placeCall(k){
   callK=k;
+  callLog.unshift(k);
   $('callui').innerHTML='<div class="avatar big" style="background:'+CONTACTS[k].color+'">'+k+'</div><h2>'+k+'</h2><p id="cs">발신 중…</p><button class="endcall" onclick="endCall(true)" aria-label="통화 종료"><svg viewBox="0 0 24 24"><path d="'+PHONE_PATH+'"/></svg></button>';
   $('callui').classList.add('on');phone.classList.remove('light');
   ringTone();
@@ -631,7 +683,9 @@ function endCall(manual){
   setTimeout(function(){
     var list=CALL_REPLY[k],msg=list[callN[k]%list.length];
     callN[k]++;
-    chat[k].push(['in',msg]);
+    pushMsg(k,'in',msg);
+    lockNotifs.unshift({app:'messages',title:k,body:msg,time:'지금',open:'thread:'+k});
+    renderNotifs(0);renderBadges();
     toast('메시지 · '+k,esc(msg));
   },1200);
 }
@@ -686,8 +740,9 @@ function mapsView(){
 
 /* ----- 시작 ----- */
 function restart(){
-  clues.clear();wrong=0;usedSug={J:{},W:{}};callN={J:0,W:0};
-  missed=false;lockNotifs=NOTIFS.slice();pendingOpen=null;
+  clues.clear();wrong=0;usedSug={J:{},W:{}};callN={J:0,W:0};callLog=[];
+  chat=JSON.parse(JSON.stringify(INIT_CHAT));stamp={J:null,W:null};order=['W','J'];
+  missed=false;lockNotifs=buildNotifs();pendingOpen=null;
   $('incoming').classList.remove('on');
   renderNotifs();renderBadges();
   startIncomingTimer();
