@@ -22,6 +22,19 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 .lock .lk{margin-top:62px;font-size:20px;opacity:.9}
 .date{margin-top:6px;font-size:19px;font-weight:500;opacity:.85}
 .time{font-size:96px;font-weight:600;letter-spacing:-3px;line-height:1.05}
+.notifs{width:100%;padding:0 16px;margin-top:22px;display:flex;flex-direction:column;gap:8px}
+.notif{display:flex;gap:11px;align-items:center;width:100%;padding:12px 14px;border:0;border-radius:20px;background:#ffffff38;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);text-align:left;animation:drop .5s cubic-bezier(.2,.9,.3,1.1)}
+.notif .ni{width:38px;height:38px;border-radius:9px;background:linear-gradient(#5df36f,#12b81f);display:grid;place-items:center;flex-shrink:0}
+.notif .ni svg{width:22px;height:22px;fill:#fff}
+.notif .nt{flex:1;min-width:0;font-size:14px;line-height:1.4}
+.notif .nt b{display:block;font-size:15px}
+.notif small{font-size:12px;color:#ffffffb0;align-self:flex-start}
+.incoming{position:absolute;z-index:90;top:8px;left:8px;right:8px;padding:14px 16px;border-radius:36px;background:#1c1c1e;display:flex;align-items:center;gap:12px;box-shadow:0 8px 30px #0008;transform:translateY(-130%);opacity:0;transition:transform .45s cubic-bezier(.2,.9,.3,1.1),opacity .3s;pointer-events:none}
+.incoming.on{transform:none;opacity:1;pointer-events:auto}
+.incoming .iv{flex:1;min-width:0}.incoming b{font-size:18px;display:block}.incoming span{font-size:13px;color:#ffffffa0}
+.incoming button{width:46px;height:46px;border:0;border-radius:50%;display:grid;place-items:center}
+.incoming .dec{background:#ff3b30}.incoming .acc{background:#30d158}
+.incoming svg{width:22px;height:22px;fill:#fff}.incoming .dec svg{transform:rotate(135deg)}
 .lockbottom{margin-top:auto;width:100%;display:flex;justify-content:space-between;padding:0 44px 62px}
 .circle{width:50px;height:50px;border:0;border-radius:50%;background:#ffffff2e;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:grid;place-items:center;transition:transform .15s}
 .circle:active{transform:scale(.9);background:#ffffff55}.circle svg{width:22px;height:22px;fill:#fff}
@@ -109,23 +122,20 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 .dark .back{color:#8a8a92}
 .dark .title{color:#e6e6e6}
 .dark .search{background:#131316;color:#55555c}
-.mapbox{position:relative;height:320px;border-radius:14px;overflow:hidden;border:1px solid #1d1d22;background:linear-gradient(90deg,transparent 47%,#1b1b20 47% 53%,transparent 53%) 0 0/96px 96px,linear-gradient(0deg,transparent 47%,#1b1b20 47% 53%,transparent 53%) 30px 20px/96px 96px,#09090b;animation:mapjit 5s steps(1) infinite}
+.mapbox{position:relative;height:320px;border-radius:14px;overflow:hidden;border:1px solid #1d1d22;background:linear-gradient(90deg,transparent 47%,#1b1b20 47% 53%,transparent 53%) 0 0/96px 96px,linear-gradient(0deg,transparent 47%,#1b1b20 47% 53%,transparent 53%) 30px 20px/96px 96px,#09090b;animation:mflick 3.7s steps(1) infinite}
 .mapbox::before{content:"";position:absolute;inset:0;z-index:3;background:#000;opacity:0;animation:blk 7s steps(1) infinite;pointer-events:none}
 .mapbox::after{content:"";position:absolute;inset:0;z-index:2;background:radial-gradient(ellipse at center,transparent 20%,#000 98%),repeating-linear-gradient(0deg,#0000 0 2px,#0007 2px 3px);pointer-events:none}
-.pin{position:absolute;z-index:1;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#6e0000;border:2px solid #240000;box-shadow:0 0 0 8px #6e000026,0 0 26px #a00000;animation:pinjit 3s steps(1) infinite,pulse 2s ease-in-out infinite}
+.pin{position:absolute;z-index:1;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#6e0000;border:2px solid #240000;box-shadow:0 0 0 8px #6e000026,0 0 26px #a00000;animation:pinmove 8s ease-in-out infinite,pulse 2s ease-in-out infinite}
+.pin.g1{opacity:.45;animation-delay:-.9s,0s}
+.pin.g2{opacity:.2;animation-delay:-1.8s,0s}
+@keyframes pinmove{0%{transform:translate(0,0)}14%{transform:translate(70px,-45px)}28%{transform:translate(-35px,-95px)}43%{transform:translate(-100px,10px)}58%{transform:translate(-45px,85px)}72%{transform:translate(60px,70px)}86%{transform:translate(105px,-15px)}100%{transform:translate(0,0)}}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 6px #6e000022,0 0 14px #800000}50%{box-shadow:0 0 0 18px #6e000010,0 0 34px #b00000}}
-@keyframes mapjit{0%,88%,100%{transform:none;filter:grayscale(1)}90%{transform:translate(9px,-2px) skewX(3deg);filter:grayscale(1) contrast(1.8) brightness(1.5)}93%{transform:translate(-10px,2px);filter:grayscale(1)}96%{transform:translate(3px,0) scaleY(1.03);filter:grayscale(1) contrast(1.6)}}
+@keyframes mflick{0%,100%{filter:brightness(1)}18%{filter:brightness(.45)}19%{filter:brightness(1.3)}20%{filter:brightness(1)}55%{filter:brightness(.6)}57%{filter:brightness(1)}80%{filter:brightness(.3)}81%{filter:brightness(1)}}
 @keyframes blk{0%,92%,100%{opacity:0}93%{opacity:.9}94%{opacity:0}95%{opacity:.65}96%{opacity:0}}
-@keyframes pinjit{0%,82%,100%{transform:none}84%{transform:translate(16px,-7px)}88%{transform:translate(-20px,9px)}93%{transform:translate(6px,14px)}}
 .loc{background:#0c0c0e;border:1px solid #1d1d22;border-radius:12px;padding:16px;margin-top:14px}
 .loc small{color:#66666d;font-size:13px}
-.glitch{position:relative;display:inline-block;margin-top:6px;font-size:40px;font-weight:700;letter-spacing:6px;color:#e4e4e4;text-shadow:0 0 10px #5a000099;animation:gj 3.4s steps(1) infinite}
-.glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%}
-.glitch::before{color:#8b0000;transform:translateX(-4px);animation:g1 1.6s infinite steps(1)}
-.glitch::after{color:#ffffff66;transform:translateX(3px);animation:g2 2.2s infinite steps(1)}
-@keyframes g1{0%{clip-path:inset(10% 0 70% 0)}20%{clip-path:inset(50% 0 20% 0)}40%{clip-path:inset(0 0 90% 0)}60%{clip-path:inset(70% 0 5% 0)}80%{clip-path:inset(30% 0 40% 0)}100%{clip-path:inset(80% 0 0 0)}}
-@keyframes g2{0%{clip-path:inset(60% 0 10% 0)}25%{clip-path:inset(5% 0 80% 0)}50%{clip-path:inset(40% 0 35% 0)}75%{clip-path:inset(85% 0 0 0)}100%{clip-path:inset(20% 0 60% 0)}}
-@keyframes gj{0%,86%,100%{transform:none;opacity:1}87%{transform:translate(-9px,0) skewX(22deg);opacity:.35}89%{transform:translate(7px,0) scaleY(.5);opacity:1}91%{opacity:.15}92%{transform:none;opacity:1}96%{transform:translate(-3px,1px) skewX(-10deg)}97%{transform:none}}
+.glitch{display:inline-block;margin-top:6px;font-size:40px;font-weight:700;letter-spacing:6px;color:#e4e4e4;text-shadow:0 0 10px #ffffff33;animation:flick 2.8s steps(1) infinite}
+@keyframes flick{0%{opacity:1}6%{opacity:.15}7%{opacity:1}30%{opacity:.6}31%{opacity:0}33%{opacity:1}34%{opacity:.2}35%{opacity:1}62%{opacity:.3}63%{opacity:1}64%{opacity:0}66%{opacity:1}100%{opacity:1}}
 .ending{z-index:30;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#000}
 .ending p{font-size:19px;letter-spacing:1px}.endtime{position:absolute;bottom:50px;color:#777;font-size:13px;letter-spacing:4px}
 .toast{position:absolute;z-index:80;top:56px;left:12px;right:12px;padding:13px 16px;border-radius:22px;background:#fffffff0;color:#222;box-shadow:0 5px 24px #0004;animation:drop .4s cubic-bezier(.2,.9,.3,1.1)}
@@ -146,6 +156,7 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 <section class="screen lock active" id="lock">
 <div class="lk"><svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><rect x="5" y="10" width="14" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="#fff" stroke-width="2"/></svg></div>
 <div class="date">10월 21일 월요일</div><div class="time">03:17</div>
+<div class="notifs" id="notifs"></div>
 <div class="lockbottom">
 <button class="circle" onclick="toast('손전등','항상 주변은 어두워야 합니다')" aria-label="손전등"><svg viewBox="0 0 24 24"><path d="M8 2h8v4l-2 3v13h-4V9L8 6z"/></svg></button>
 <button class="circle" onclick="toast('카메라','꿈 속은 기록할 수 없어요.')" aria-label="카메라"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5" fill="#33364a"/></svg></button>
@@ -170,6 +181,7 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 
 <section class="screen ending" id="ending"><p>드디어 일어났구나.</p><div class="endtime">03:17</div></section>
 
+<div class="incoming" id="incoming"></div>
 <button class="bar-hitbox" id="homebar" aria-label="홈"><span class="bar"></span></button>
 </main>
 
@@ -181,10 +193,10 @@ var $=function(id){return document.getElementById(id)};
    ========================================================= */
 var PASSCODE='0617';   // 잠금 해제 비밀번호
 
-// 연락처 이름·색상
+// 연락처 이름·색상·전화번호
 var CONTACTS={
-  J:{name:'J',color:'#5e7bff'},
-  W:{name:'W',color:'#34343b'}
+  J:{name:'J',color:'#5e7bff',phone:'010-1995-1004'},
+  W:{name:'W',color:'#34343b',phone:'010-1996-0717'}
 };
 
 // 사진 앱에 보일 사진 (GitHub의 images 폴더에 올린 파일)
@@ -264,12 +276,16 @@ var CALL_REPLY={
   J:['왜? 무슨 일이야? 다 괜찮으니까 걱정하지 마.','왜 자꾸 전화해? 여긴 안전하다니까.']
 };
 
+// 잠금화면: 첫 화면이 뜬 뒤 알 수 없음 전화가 오기까지(ms), 울리는 시간(ms)
+var INCOMING_DELAY=2200, INCOMING_RING=6000;
+
 // Archive를 열기 위해 필요한 단서
 var required=['photo','message','note','call','setting'];
 /* ========================= 설정 끝 ========================= */
 
 var clues=new Set(),entered='',wrong=0,curApp=null,usedSug={J:{},W:{}};
-var callT=null,callK=null,callN={J:0,W:0},actx=null,ringNode=null,glT=null;
+var callT=null,callK=null,callN={J:0,W:0},actx=null,ringNode=null;
+var missed=false,incT=[];
 var phone=$('phone');
 var PHONE_PATH='M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z';
 
@@ -294,6 +310,32 @@ var apps=[
 var DOCK=['phone','messages','safari','photos'];
 function mk(a){return '<button class="appbtn" data-app="'+a[0]+'"><span class="appicon" style="background:'+a[2]+'">'+a[3]+'</span><span class="appname">'+a[1]+'</span></button>'}
 function findApp(id){return apps.filter(function(a){return a[0]===id})[0]}
+
+/* ----- 잠금화면: 알 수 없음 전화 → 부재중 알림 ----- */
+function showIncoming(){
+  if(missed)return;
+  var el=$('incoming');
+  el.innerHTML='<div class="iv"><b>알 수 없음</b><span>휴대전화 · 수신 중…</span></div>'+
+    '<button class="dec" onclick="endIncoming()" aria-label="거절"><svg viewBox="0 0 24 24"><path d="'+PHONE_PATH+'"/></svg></button>'+
+    '<button class="acc" onclick="toast(\'전화\',\'통화를 연결할 수 없어요.\');endIncoming()" aria-label="수락"><svg viewBox="0 0 24 24"><path d="'+PHONE_PATH+'"/></svg></button>';
+  el.classList.add('on');
+  try{if(navigator.vibrate)navigator.vibrate([400,200,400,200,400])}catch(e){}
+  incT.push(setTimeout(endIncoming,INCOMING_RING));
+}
+function endIncoming(){
+  incT.forEach(clearTimeout);incT=[];
+  $('incoming').classList.remove('on');
+  addMissed();
+}
+function addMissed(){
+  if(missed)return;
+  missed=true;
+  $('notifs').innerHTML='<button class="notif" onclick="showPasscode()"><span class="ni"><svg viewBox="0 0 24 24"><path d="'+PHONE_PATH+'"/></svg></span><span class="nt"><b>전화</b>알 수 없음<br>부재중 전화</span><small>지금</small></button>';
+}
+function startIncomingTimer(){
+  incT.forEach(clearTimeout);
+  incT=[setTimeout(showIncoming,INCOMING_DELAY)];
+}
 
 /* ----- 화면 전환 ----- */
 function switchScreen(id){
@@ -339,7 +381,7 @@ function openApp(id,el){
 }
 function closeApp(instant){
   if(!curApp)return;
-  cancelCall();stopGlitch();
+  cancelCall();
   curApp=null;
   var s=$('appscreen');
   if(instant)s.style.transition='none';
@@ -364,7 +406,6 @@ function av(k){return '<span class="avatar" style="background:'+CONTACTS[k].colo
 var unk='<span class="avatar" style="background:#c7c7cc">?</span>';
 function esc(s){return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
 function render(id){
-  stopGlitch();
   var v={photos:photosView,messages:messagesView,phone:phoneView,safari:safariView,maps:mapsView,notes:notesView,clock:clockView,contacts:contactsView,settings:settingsView,archive:archiveView};
   (v[id]||clockView)();
 }
@@ -474,8 +515,8 @@ function sendReply(text){
 function phoneView(){
   setPage(tb('홈')+ttl('최근 통화')+grp([
     row('알 수 없음','수신 전화',unk,'callDetail()','오전 3:17'),
-    row('W','부재중 전화',av('W'),"contactDetail('010-1996-0717')",'어제'),
-    row('J','발신 전화',av('J'),"contactDetail('010-1995-1004')",'어제')
+    row('W','부재중 전화',av('W'),"contactDetail('W')",'어제'),
+    row('J','발신 전화',av('J'),"contactDetail('J')",'어제')
   ]));
 }
 function callDetail(){
@@ -486,7 +527,7 @@ function contactsView(){
   setPage(tb('홈')+ttl('연락처')+'<div class="search" style="margin-bottom:6px">⌕ 검색</div>'+grp(['J','W'].map(function(k){return row(k,'',av(k),"contactDetail('"+k+"')")})));
 }
 function contactDetail(k){
-  setPage(tb('연락처','contactsView()')+'<div class="bigcenter"><div class="avatar big" style="background:'+CONTACTS[k].color+'">'+k+'</div><h2 style="margin:0">'+k+'</h2></div><div class="btns"><button class="action gray" onclick="thread(\''+k+'\')">메시지</button><button class="action gray" onclick="placeCall(\''+k+'\')">통화</button></div>'+grp([row('휴대전화','번호 없음','','')]));
+  setPage(tb('연락처','contactsView()')+'<div class="bigcenter"><div class="avatar big" style="background:'+CONTACTS[k].color+'">'+k+'</div><h2 style="margin:0">'+k+'</h2></div><div class="btns"><button class="action gray" onclick="thread(\''+k+'\')">메시지</button><button class="action gray" onclick="placeCall(\''+k+'\')">통화</button></div>'+grp([row('휴대전화',esc(CONTACTS[k].phone||'번호 없음'),'','')]));
 }
 
 /* 전화 걸기: 연결음 → 끊김 → 문자 수신 */
@@ -501,7 +542,6 @@ function ringTone(){
     var t=actx.currentTime;
     [0,2.4].forEach(function(s){g.gain.setValueAtTime(0.08,t+s);g.gain.setValueAtTime(0,t+s+1.2)});
     ringNode=g;
-     
   }catch(e){}
 }
 function stopRing(){
@@ -569,27 +609,17 @@ function clockView(){
 }
 
 /* ----- 지도 (UNFIND) ----- */
-var GLITCH_TEXT=['UN\u0337FIND','UNF\u2588ND','U\u0336N\u0337F\u0338I\u0336N\u0335D','UNFIND','\u2588NFIND','UNFIN\u2588'];
 function mapsView(){
-  setPage('<div class="dark">'+tb('홈')+ttl('지도')+'<div class="search" style="margin-bottom:12px">⌕ 지도 검색</div><div class="mapbox"><div class="pin"></div></div><div class="loc"><small>현재 위치</small><br><span class="glitch" data-text="UNFIND">UNFIND</span></div></div>');
-  startGlitch();
+  setPage('<div class="dark">'+tb('홈')+ttl('지도')+'<div class="search" style="margin-bottom:12px">⌕ 지도 검색</div><div class="mapbox"><div class="pin g2"></div><div class="pin g1"></div><div class="pin"></div></div><div class="loc"><small>현재 위치</small><br><span class="glitch">UNFIND</span></div></div>');
 }
-function startGlitch(){
-  stopGlitch();
-  glT=setInterval(function(){
-    var el=document.querySelector('.glitch');
-    if(!el){stopGlitch();return}
-    if(Math.random()<0.4){
-      var t=GLITCH_TEXT[Math.floor(Math.random()*GLITCH_TEXT.length)];
-      el.textContent=t;el.setAttribute('data-text',t);
-      setTimeout(function(){el.textContent='UNFIND';el.setAttribute('data-text','UNFIND')},110);
-    }
-  },800);
-}
-function stopGlitch(){if(glT){clearInterval(glT);glT=null}}
 
 /* ----- 시작 ----- */
-function restart(){clues.clear();wrong=0;usedSug={J:{},W:{}};callN={J:0,W:0};showLock()}
+function restart(){
+  clues.clear();wrong=0;usedSug={J:{},W:{}};callN={J:0,W:0};
+  missed=false;$('notifs').innerHTML='';$('incoming').classList.remove('on');
+  startIncomingTimer();
+  showLock();
+}
 $('keypad').innerHTML=[1,2,3,4,5,6,7,8,9].map(function(n){return '<button class="key" onclick="pressDigit(\''+n+'\')">'+n+'</button>'}).join('')+
   '<button class="key blank" tabindex="-1"></button><button class="key" onclick="pressDigit(\'0\')">0</button><button class="key sm" onclick="deleteDigit()">삭제</button>';
 $('grid').innerHTML=apps.filter(function(a){return DOCK.indexOf(a[0])<0}).map(mk).join('');
@@ -612,6 +642,7 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Enter'&&$('reply'))sendReply();
   if(e.key==='Escape'){if(curApp)closeApp();else showLock()}
 });
+startIncomingTimer();
 </script>
 </body>
 </html>
