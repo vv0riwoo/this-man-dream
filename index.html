@@ -697,26 +697,63 @@ function clockView(){
   setPage(tb('홈')+ttl('시계')+grp([row('세계 시계','서울 +9시간'),row('알람','알람 없음'),row('스톱워치','00:00.00'),row('타이머','시간 설정')])+'<div class="bigcenter" style="font-size:52px;color:#222;font-weight:300">03:17<p>서울</p></div>');
 }
 
-/* ----- 지도 (UNFIND) ----- */
-var GLITCH_TEXT=['UN\u0337FIND','UNF\u2588ND','U\u0336N\u0337F\u0338I\u0336N\u0335D','UNFIND','\u2588NFIND','UNFIN\u2588'];
-function mapsView(){
-  setPage('<div class="dark">'+tb('홈')+ttl('지도')+'<div class="search" style="margin-bottom:12px">⌕ 지도 검색</div><div class="mapbox"><div class="pin"></div></div><div class="loc"><small>현재 위치</small><br><span class="glitch" data-text="UNFIND">UNFIND</span></div></div>');
-  startGlitch();
-}
-function startGlitch(){
-  stopGlitch();
-  glT=setInterval(function(){
-    var el=document.querySelector('.glitch');
-    if(!el){stopGlitch();return}
-    if(Math.random()<0.4){
-      var t=GLITCH_TEXT[Math.floor(Math.random()*GLITCH_TEXT.length)];
-      el.textContent=t;el.setAttribute('data-text',t);
-      setTimeout(function(){el.textContent='UNFIND';el.setAttribute('data-text','UNFIND')},110);
-    }
-  },800);
-}
-function stopGlitch(){if(glT){clearInterval(glT);glT=null}}
+/* —– 지도 (UNFIND) —– */
+var GLITCH_TEXT=[
+‘UN\u0337FIND’,
+‘UNF\u2588ND’,
+‘U\u0336N\u0337F\u0338I\u0336N\u0335D’,
+‘UNFIND’,
+‘\u2588NFIND’,
+‘UNFIN\u2588’
+];
 
+function mapsView(){
+setPage(
+‘’+
+tb(‘홈’)+
+ttl(‘지도’)+
+‘⌕ 지도 검색’+
+‘’+
+‘현재 위치’+
+‘UNFIND’+
+‘’+
+‘’
+);
+startGlitch();
+}
+
+function startGlitch(){
+stopGlitch();
+
+glT=setInterval(function(){
+var el=document.querySelector(’.glitch’);
+
+if(!el){
+  stopGlitch();
+  return;
+}
+if(Math.random()<0.4){
+  var t=GLITCH_TEXT[
+    Math.floor(Math.random()*GLITCH_TEXT.length)
+  ];
+  el.textContent=t;
+  el.setAttribute('data-text',t);
+  setTimeout(function(){
+    if(!document.querySelector('.glitch'))return;
+    el.textContent='UNFIND';
+    el.setAttribute('data-text','UNFIND');
+  },110);
+}
+
+},800);
+}
+
+function stopGlitch(){
+if(glT){
+clearInterval(glT);
+glT=null;
+}
+}
 /* ----- 시작 ----- */
 function restart(){clues.clear();wrong=0;usedSug={J:{},W:{}};callN={J:0,W:0};showLock()}
 $('keypad').innerHTML=[1,2,3,4,5,6,7,8,9].map(function(n){return '<button class="key" onclick="pressDigit(\''+n+'\')">'+n+'</button>'}).join('')+
