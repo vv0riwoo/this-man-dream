@@ -21,6 +21,21 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .circle{width:48px;height:48px;border:1px solid #ffffff55;border-radius:50%;background:#ffffff24;color:white;display:grid;place-items:center}
 .hint{font-size:11px;color:#ffffffb8;text-align:center;border:0;background:none;padding:14px 8px}
 .bar{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:105px;height:5px;border:0;border-radius:5px;background:white;z-index:15;padding:0;cursor:pointer;touch-action:manipulation}
+/* 언더바의 보이지 않는 터치 영역 */
+.bar-hitbox{
+ position:absolute;
+ left:0;
+ right:0;
+ bottom:0;
+ height:75px;
+ z-index:16;
+ background:transparent;
+ border:0;
+ padding:0;
+ cursor:pointer;
+ touch-action:manipulation;
+ -webkit-tap-highlight-color:transparent;
+}
 .home{display:none;padding:16px 19px;background:radial-gradient(ellipse at 20% 5%,#60637a,transparent 40%),radial-gradient(ellipse at 80% 70%,#3b354e,transparent 45%),linear-gradient(150deg,#292b3d,#101117)}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:23px 8px;margin-top:42px}
 .appbtn{min-width:0;border:0;padding:0;background:none;color:white;display:flex;flex-direction:column;align-items:center;gap:5px}
@@ -33,7 +48,7 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .appscreen{display:none;background:#f2f2f7;color:#1c1c1e}
 .appstatus{position:absolute;top:0;left:0;right:0;background:#f2f2f7;color:#1c1c1e}
 .appstatus .status{color:#1c1c1e}
-.content{position:absolute;top:30px;bottom:0;left:0;right:0;overflow:auto;padding:12px 20px 36px}
+.content{position:absolute;top:30px;bottom:0;left:0;right:0;overflow:auto;padding:12px 20px 90px}
 .back{border:0;background:none;color:#087aff;padding:5px 0;font-size:16px}
 .title{font-size:32px;font-weight:750;margin:12px 0 22px;letter-spacing:-1px}
 .muted{color:#8e8e93}
@@ -109,6 +124,7 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
   </button>
  </div>
  <button class="bar" onclick="showHome()" aria-label="잠금 해제"></button>
+ <button class="bar-hitbox" onclick="showHome()" aria-label="홈 화면으로 이동"></button>
 </section>
 
 <section class="screen home" id="home">
@@ -124,6 +140,7 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
  <div class="dots">●　○</div>
  <div class="dock" id="dock"></div>
  <button class="bar" onclick="showLock()" aria-label="잠금 화면"></button>
+ <button class="bar-hitbox" onclick="showLock()" aria-label="잠금 화면으로 이동"></button>
 </section>
 
 <section class="screen appscreen" id="appscreen">
@@ -139,12 +156,14 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
  </div>
  <div class="content" id="content"></div>
  <button class="bar" style="background:#333" onclick="back()" aria-label="홈 화면"></button>
+ <button class="bar-hitbox" onclick="back()" aria-label="홈 화면으로 이동"></button>
 </section>
 
 <section class="ending" id="ending">
  <p>드디어 일어났구나.</p>
  <div class="endtime">03:17</div>
  <button class="bar" onclick="restart()" aria-label="다시 시작"></button>
+ <button class="bar-hitbox" onclick="restart()" aria-label="처음부터 다시 시작"></button>
 </section>
 </main>
 
@@ -316,19 +335,19 @@ function mapsView(){return `${top('지도')}${title('지도')}<div style="height
 
 drawApps();
 
-/* 앱 아이콘은 이벤트 위임으로 실행 */
+/* 앱 아이콘 이벤트 */
 document.addEventListener('click',e=>{
  const b=e.target.closest('[data-app]');
  if(b)openApp(b.dataset.app);
 });
 
-/* 잠금화면 배경을 누르면 홈화면으로 이동 */
+/* 잠금 화면 배경 터치 */
 $('lock').addEventListener('click',e=>{
- if(e.target.closest('.bar')||e.target.closest('.hint'))return;
+ if(e.target.closest('.bar')||e.target.closest('.bar-hitbox')||e.target.closest('.hint'))return;
  if(!e.target.closest('button'))showHome();
 });
 
-/* 위로 쓸어올리기 */
+/* 잠금 화면 스와이프 */
 let touchY=0;
 $('lock').addEventListener('touchstart',e=>{
  touchY=e.touches[0].clientY;
@@ -338,11 +357,18 @@ $('lock').addEventListener('touchend',e=>{
  if(touchY-e.changedTouches[0].clientY>30)showHome();
 },{passive:true});
 
-/* 하단 언더바 터치 대응 */
-const lockBar=document.querySelector('#lock .bar');
-lockBar.addEventListener('pointerup',e=>{
- e.preventDefault();
- showHome();
+/* 모든 화면의 언더바 영역을 확실하게 연결 */
+document.querySelectorAll('.bar, .bar-hitbox').forEach(el=>{
+ el.addEventListener('pointerup',e=>{
+  e.preventDefault();
+  e.stopPropagation();
+  const parent=el.closest('#lock, #home, #appscreen, #ending');
+  if(!parent)return;
+  if(parent.id==='lock')showHome();
+  else if(parent.id==='home')showLock();
+  else if(parent.id==='appscreen')back();
+  else if(parent.id==='ending')restart();
+ });
 });
 
 /* 키보드 뒤로 가기 */
