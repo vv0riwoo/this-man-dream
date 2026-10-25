@@ -358,17 +358,29 @@ $('lock').addEventListener('touchend',e=>{
 },{passive:true});
 
 /* 모든 화면의 언더바 영역을 확실하게 연결 */
-document.querySelectorAll('.bar, .bar-hitbox').forEach(el=>{
- el.addEventListener('pointerup',e=>{
-  e.preventDefault();
-  e.stopPropagation();
-  const parent=el.closest('#lock, #home, #appscreen, #ending');
-  if(!parent)return;
-  if(parent.id==='lock')showHome();
-  else if(parent.id==='home')showLock();
-  else if(parent.id==='appscreen')back();
-  else if(parent.id==='ending')restart();
- });
+document.querySelectorAll('.bar-hitbox').forEach(el => {
+  el.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const parent = el.closest('#lock, #home, #appscreen, #ending');
+    if (!parent) return;
+
+    switch (parent.id) {
+      case 'lock':
+        showHome();
+        break;
+      case 'home':
+        showLock();
+        break;
+      case 'appscreen':
+        back();
+        break;
+      case 'ending':
+        restart();
+        break;
+    }
+  });
 });
 
 /* 키보드 뒤로 가기 */
