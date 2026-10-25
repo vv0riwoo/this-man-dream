@@ -53,6 +53,7 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 .dots{position:absolute;bottom:122px;left:0;right:0;display:flex;justify-content:center;gap:8px}.dots i{width:7px;height:7px;border-radius:50%;background:#ffffff55}.dots i:first-child{background:#fff}
 .appscreen{z-index:20;background:#f2f2f7;color:#1c1c1e;transform:scale(.12);border-radius:46px;transition:opacity .3s ease,transform .5s cubic-bezier(.2,.8,.2,1),border-radius .5s,visibility .5s}
 .appscreen.active{border-radius:0}
+.appscreen.dk{background:#050506}
 .content{position:absolute;inset:50px 0 0;overflow:auto;padding:6px 20px 90px;overscroll-behavior:contain}
 .content.push{animation:push .38s cubic-bezier(.2,.8,.2,1)}
 @keyframes push{from{opacity:0;transform:translateX(32px)}to{opacity:1;transform:none}}
@@ -103,20 +104,28 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 .callui h2{margin:0;font-size:32px;font-weight:500}.callui p{margin:8px 0 0;color:#ffffffa0;font-size:17px}
 .endcall{margin-top:auto;margin-bottom:90px;width:70px;height:70px;border:0;border-radius:50%;background:#ff3b30;display:grid;place-items:center}
 .endcall svg{width:32px;height:32px;fill:#fff;transform:rotate(135deg)}
-.mapbox{position:relative;height:300px;border-radius:16px;overflow:hidden;background:linear-gradient(90deg,transparent 47%,#fff 47% 53%,transparent 53%) 0 0/96px 96px,linear-gradient(0deg,transparent 47%,#fff 47% 53%,transparent 53%) 30px 20px/96px 96px,#cfd4dc;animation:mapjit 4s steps(1) infinite}
-.mapbox::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,#0000 0 3px,#0002 3px 4px);pointer-events:none}
-.pin{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:#ff3b30;border:3px solid #fff;box-shadow:0 0 0 10px #ff3b3033;animation:pinjit 2.5s steps(1) infinite}
-@keyframes mapjit{0%,90%,100%{transform:none;filter:none}92%{transform:translate(6px,-2px);filter:hue-rotate(60deg)}95%{transform:translate(-6px,2px)}97%{transform:translate(2px,0);filter:invert(.15)}}
-@keyframes pinjit{0%,85%,100%{transform:none}88%{transform:translate(14px,-6px)}92%{transform:translate(-18px,8px)}96%{transform:translate(5px,12px)}}
-.loc{background:#fff;border-radius:12px;padding:14px;margin-top:14px}
-.loc small{color:#8e8e93;font-size:13px}
-.glitch{position:relative;display:inline-block;margin-top:4px;font-size:40px;font-weight:800;letter-spacing:2px;color:#1c1c1e;animation:gj 3s steps(1) infinite}
+/* 지도 (어둡고 불길한 분위기) */
+.dark{margin:-6px -20px -90px;padding:6px 20px 90px;min-height:calc(100% + 96px);background:#050506;color:#cfcfd4}
+.dark .back{color:#8a8a92}
+.dark .title{color:#e6e6e6}
+.dark .search{background:#131316;color:#55555c}
+.mapbox{position:relative;height:320px;border-radius:14px;overflow:hidden;border:1px solid #1d1d22;background:linear-gradient(90deg,transparent 47%,#1b1b20 47% 53%,transparent 53%) 0 0/96px 96px,linear-gradient(0deg,transparent 47%,#1b1b20 47% 53%,transparent 53%) 30px 20px/96px 96px,#09090b;animation:mapjit 5s steps(1) infinite}
+.mapbox::before{content:"";position:absolute;inset:0;z-index:3;background:#000;opacity:0;animation:blk 7s steps(1) infinite;pointer-events:none}
+.mapbox::after{content:"";position:absolute;inset:0;z-index:2;background:radial-gradient(ellipse at center,transparent 20%,#000 98%),repeating-linear-gradient(0deg,#0000 0 2px,#0007 2px 3px);pointer-events:none}
+.pin{position:absolute;z-index:1;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#6e0000;border:2px solid #240000;box-shadow:0 0 0 8px #6e000026,0 0 26px #a00000;animation:pinjit 3s steps(1) infinite,pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 6px #6e000022,0 0 14px #800000}50%{box-shadow:0 0 0 18px #6e000010,0 0 34px #b00000}}
+@keyframes mapjit{0%,88%,100%{transform:none;filter:grayscale(1)}90%{transform:translate(9px,-2px) skewX(3deg);filter:grayscale(1) contrast(1.8) brightness(1.5)}93%{transform:translate(-10px,2px);filter:grayscale(1)}96%{transform:translate(3px,0) scaleY(1.03);filter:grayscale(1) contrast(1.6)}}
+@keyframes blk{0%,92%,100%{opacity:0}93%{opacity:.9}94%{opacity:0}95%{opacity:.65}96%{opacity:0}}
+@keyframes pinjit{0%,82%,100%{transform:none}84%{transform:translate(16px,-7px)}88%{transform:translate(-20px,9px)}93%{transform:translate(6px,14px)}}
+.loc{background:#0c0c0e;border:1px solid #1d1d22;border-radius:12px;padding:16px;margin-top:14px}
+.loc small{color:#66666d;font-size:13px}
+.glitch{position:relative;display:inline-block;margin-top:6px;font-size:40px;font-weight:700;letter-spacing:6px;color:#e4e4e4;text-shadow:0 0 10px #5a000099;animation:gj 3.4s steps(1) infinite}
 .glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%}
-.glitch::before{color:#ff2d55;transform:translateX(-3px);animation:g1 1.7s infinite steps(1)}
-.glitch::after{color:#00c8e6;transform:translateX(3px);animation:g2 2.1s infinite steps(1)}
+.glitch::before{color:#8b0000;transform:translateX(-4px);animation:g1 1.6s infinite steps(1)}
+.glitch::after{color:#ffffff66;transform:translateX(3px);animation:g2 2.2s infinite steps(1)}
 @keyframes g1{0%{clip-path:inset(10% 0 70% 0)}20%{clip-path:inset(50% 0 20% 0)}40%{clip-path:inset(0 0 90% 0)}60%{clip-path:inset(70% 0 5% 0)}80%{clip-path:inset(30% 0 40% 0)}100%{clip-path:inset(80% 0 0 0)}}
 @keyframes g2{0%{clip-path:inset(60% 0 10% 0)}25%{clip-path:inset(5% 0 80% 0)}50%{clip-path:inset(40% 0 35% 0)}75%{clip-path:inset(85% 0 0 0)}100%{clip-path:inset(20% 0 60% 0)}}
-@keyframes gj{0%,90%,100%{transform:none}92%{transform:translate(-4px,1px) skewX(8deg)}95%{transform:translate(4px,-1px)}97%{transform:translate(-2px,0) skewX(-6deg)}}
+@keyframes gj{0%,86%,100%{transform:none;opacity:1}87%{transform:translate(-9px,0) skewX(22deg);opacity:.35}89%{transform:translate(7px,0) scaleY(.5);opacity:1}91%{opacity:.15}92%{transform:none;opacity:1}96%{transform:translate(-3px,1px) skewX(-10deg)}97%{transform:none}}
 .ending{z-index:30;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#000}
 .ending p{font-size:19px;letter-spacing:1px}.endtime{position:absolute;bottom:50px;color:#777;font-size:13px;letter-spacing:4px}
 .toast{position:absolute;z-index:80;top:56px;left:12px;right:12px;padding:13px 16px;border-radius:22px;background:#fffffff0;color:#222;box-shadow:0 5px 24px #0004;animation:drop .4s cubic-bezier(.2,.9,.3,1.1)}
@@ -179,14 +188,12 @@ var CONTACTS={
 };
 
 // 사진 앱에 보일 사진 (GitHub의 images 폴더에 올린 파일)
-// 확장자를 빼면 jpeg, jpg, png, webp 등을 자동으로 찾아요.
-// 파일 이름이 다르면 그대로 적으세요. 예: 'images/KakaoTalk_001.jpg'
 // 사진을 더 넣으려면 줄을 추가하면 돼요.
 var PHOTOS=[
-  'images/photo1',
-  'images/photo2',
-  'images/photo3',
-  'images/photo4'
+  'images/photo1.jpeg',
+  'images/photo2.jpeg',
+  'images/photo3.jpeg',
+  'images/photo4.jpeg'
 ];
 
 // 사파리 검색 기록: ['구간 이름', ['검색어', '검색어', ...]]
@@ -262,7 +269,7 @@ var required=['photo','message','note','call','setting'];
 /* ========================= 설정 끝 ========================= */
 
 var clues=new Set(),entered='',wrong=0,curApp=null,usedSug={J:{},W:{}};
-var callT=null,callK=null,callN={J:0,W:0},actx=null,ringNode=null;
+var callT=null,callK=null,callN={J:0,W:0},actx=null,ringNode=null,glT=null;
 var phone=$('phone');
 var PHONE_PATH='M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z';
 
@@ -323,14 +330,16 @@ function openApp(id,el){
   if(id==='archive'&&required.every(function(c){return clues.has(c)})){switchScreen('ending');return}
   var p=phone.getBoundingClientRect(),r=el.getBoundingClientRect(),s=$('appscreen');
   s.style.transformOrigin=(r.left+r.width/2-p.left)+'px '+(r.top+r.height/2-p.top)+'px';
+  s.classList.toggle('dk',id==='maps');
   curApp=id;render(id);
   requestAnimationFrame(function(){
-    s.classList.add('active');$('home').classList.add('under');phone.classList.add('light');
+    s.classList.add('active');$('home').classList.add('under');
+    if(id!=='maps')phone.classList.add('light');
   });
 }
 function closeApp(instant){
   if(!curApp)return;
-  cancelCall();
+  cancelCall();stopGlitch();
   curApp=null;
   var s=$('appscreen');
   if(instant)s.style.transition='none';
@@ -355,16 +364,17 @@ function av(k){return '<span class="avatar" style="background:'+CONTACTS[k].colo
 var unk='<span class="avatar" style="background:#c7c7cc">?</span>';
 function esc(s){return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
 function render(id){
+  stopGlitch();
   var v={photos:photosView,messages:messagesView,phone:phoneView,safari:safariView,maps:mapsView,notes:notesView,clock:clockView,contacts:contactsView,settings:settingsView,archive:archiveView};
   (v[id]||clockView)();
 }
 
 /* ----- 사진 ----- */
-var EXTS=['jpeg','jpg','png','webp','JPG','JPEG','PNG'];
 var photoSrc={};
 function loadInto(img,i,cb){
   var base=PHOTOS[i],c=0;
-  var list=/\.[A-Za-z0-9]+$/.test(base)?[base]:EXTS.map(function(e){return base+'.'+e});
+  var list=[base];
+  if(/^images\//.test(base))list.push(base.replace(/^images\//,''));
   (function next(){
     if(photoSrc[i]){img.src=photoSrc[i];if(cb)cb();return}
     if(c>=list.length){img.remove();console.warn('사진을 찾지 못했어요:',base);return}
@@ -556,9 +566,26 @@ function archiveView(){
 function clockView(){
   setPage(tb('홈')+ttl('시계')+grp([row('세계 시계','서울 +9시간'),row('알람','알람 없음'),row('스톱워치','00:00.00'),row('타이머','시간 설정')])+'<div class="bigcenter" style="font-size:52px;color:#222;font-weight:300">03:17<p>서울</p></div>');
 }
+
+/* ----- 지도 (UNFIND) ----- */
+var GLITCH_TEXT=['UN\u0337FIND','UNF\u2588ND','U\u0336N\u0337F\u0338I\u0336N\u0335D','UNFIND','\u2588NFIND','UNFIN\u2588'];
 function mapsView(){
-  setPage(tb('홈')+ttl('지도')+'<div class="search" style="margin-bottom:12px">⌕ 지도 검색</div><div class="mapbox"><div class="pin"></div></div><div class="loc"><small>현재 위치</small><br><span class="glitch" data-text="UNFIND">UNFIND</span></div>');
+  setPage('<div class="dark">'+tb('홈')+ttl('지도')+'<div class="search" style="margin-bottom:12px">⌕ 지도 검색</div><div class="mapbox"><div class="pin"></div></div><div class="loc"><small>현재 위치</small><br><span class="glitch" data-text="UNFIND">UNFIND</span></div></div>');
+  startGlitch();
 }
+function startGlitch(){
+  stopGlitch();
+  glT=setInterval(function(){
+    var el=document.querySelector('.glitch');
+    if(!el){stopGlitch();return}
+    if(Math.random()<0.4){
+      var t=GLITCH_TEXT[Math.floor(Math.random()*GLITCH_TEXT.length)];
+      el.textContent=t;el.setAttribute('data-text',t);
+      setTimeout(function(){el.textContent='UNFIND';el.setAttribute('data-text','UNFIND')},110);
+    }
+  },800);
+}
+function stopGlitch(){if(glT){clearInterval(glT);glT=null}}
 
 /* ----- 시작 ----- */
 function restart(){clues.clear();wrong=0;usedSug={J:{},W:{}};callN={J:0,W:0};showLock()}
