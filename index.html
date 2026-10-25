@@ -22,20 +22,22 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 .lock .lk{margin-top:62px;font-size:20px;opacity:.9}
 .date{margin-top:6px;font-size:19px;font-weight:500;opacity:.85}
 .time{font-size:96px;font-weight:600;letter-spacing:-3px;line-height:1.05}
-.notifs{width:100%;padding:0 16px;margin-top:22px;display:flex;flex-direction:column;gap:8px}
-.notif{display:flex;gap:11px;align-items:center;width:100%;padding:12px 14px;border:0;border-radius:20px;background:#ffffff38;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);text-align:left;animation:drop .5s cubic-bezier(.2,.9,.3,1.1)}
-.notif .ni{width:38px;height:38px;border-radius:9px;background:linear-gradient(#5df36f,#12b81f);display:grid;place-items:center;flex-shrink:0}
-.notif .ni svg{width:22px;height:22px;fill:#fff}
-.notif .nt{flex:1;min-width:0;font-size:14px;line-height:1.4}
+.notifs{width:100%;padding:0 16px 8px;margin-top:20px;flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:8px;scrollbar-width:none}
+.notifs::-webkit-scrollbar{display:none}
+.notif{flex-shrink:0;display:flex;gap:11px;align-items:center;width:100%;padding:12px 14px;border:0;border-radius:20px;background:#ffffff38;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);text-align:left}
+.notif.new{animation:drop .5s cubic-bezier(.2,.9,.3,1.1)}
+.notif .ni{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;flex-shrink:0;overflow:hidden}
+.notif .ni svg{width:24px;height:24px;fill:#fff}
+.notif .nt{flex:1;min-width:0;font-size:14px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .notif .nt b{display:block;font-size:15px}
-.notif small{font-size:12px;color:#ffffffb0;align-self:flex-start}
+.notif small{font-size:12px;color:#ffffffb0;align-self:flex-start;white-space:nowrap}
 .incoming{position:absolute;z-index:90;top:8px;left:8px;right:8px;padding:14px 16px;border-radius:36px;background:#1c1c1e;display:flex;align-items:center;gap:12px;box-shadow:0 8px 30px #0008;transform:translateY(-130%);opacity:0;transition:transform .45s cubic-bezier(.2,.9,.3,1.1),opacity .3s;pointer-events:none}
 .incoming.on{transform:none;opacity:1;pointer-events:auto}
 .incoming .iv{flex:1;min-width:0}.incoming b{font-size:18px;display:block}.incoming span{font-size:13px;color:#ffffffa0}
 .incoming button{width:46px;height:46px;border:0;border-radius:50%;display:grid;place-items:center}
 .incoming .dec{background:#ff3b30}.incoming .acc{background:#30d158}
 .incoming svg{width:22px;height:22px;fill:#fff}.incoming .dec svg{transform:rotate(135deg)}
-.lockbottom{margin-top:auto;width:100%;display:flex;justify-content:space-between;padding:0 44px 62px}
+.lockbottom{width:100%;display:flex;justify-content:space-between;padding:0 44px 62px}
 .circle{width:50px;height:50px;border:0;border-radius:50%;background:#ffffff2e;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:grid;place-items:center;transition:transform .15s}
 .circle:active{transform:scale(.9);background:#ffffff55}.circle svg{width:22px;height:22px;fill:#fff}
 .swipe{position:absolute;bottom:26px;width:100%;text-align:center;font-size:12px;color:#ffffffa0}
@@ -56,11 +58,13 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 .home{padding:62px 20px 20px;background:radial-gradient(ellipse at 20% 5%,#6a6d8c,transparent 45%),radial-gradient(ellipse at 85% 75%,#4a3f63,transparent 50%),linear-gradient(160deg,#2b2e45,#0e0f16);transition:opacity .35s,transform .45s cubic-bezier(.2,.8,.2,1),visibility .45s,filter .45s}
 .home.under{transform:scale(.92);filter:brightness(.6)}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px 6px}
-.appbtn{border:0;padding:0;background:none;display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s}
+.appbtn{position:relative;border:0;padding:0;background:none;display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s}
 .appbtn:active{transform:scale(.9)}
 .appicon{width:60px;height:60px;border-radius:14px;display:grid;place-items:center;overflow:hidden;box-shadow:0 1px 4px #0005,inset 0 0 0 .5px #ffffff22}
 .appicon svg{width:34px;height:34px;fill:#fff}
 .appname{font-size:11px;font-weight:500;text-shadow:0 1px 3px #0008}
+.badge{position:absolute;top:-7px;left:calc(50% + 10px);min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:#ff3b30;color:#fff;font-size:14px;font-weight:600;display:none;align-items:center;justify-content:center;box-shadow:0 0 0 1.5px #0003}
+.badge.on{display:flex}
 .dock{position:absolute;left:12px;right:12px;bottom:26px;height:88px;border-radius:32px;background:#ffffff2e;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:flex;align-items:center;justify-content:space-evenly}
 .dock .appname{display:none}
 .dots{position:absolute;bottom:122px;left:0;right:0;display:flex;justify-content:center;gap:8px}.dots i{width:7px;height:7px;border-radius:50%;background:#ffffff55}.dots i:first-child{background:#fff}
@@ -76,7 +80,7 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 .group{background:#fff;border-radius:12px;padding:0 14px;margin:14px 0}
 .sec{font-size:20px;font-weight:700;margin:22px 0 -4px}
 .row{width:100%;min-height:56px;display:flex;align-items:center;gap:12px;padding:10px 0;border:0;border-bottom:1px solid #e3e3e8;background:none;text-align:left;color:#1c1c1e}
-.row:last-child{border-bottom:0}.row:active{opacity:.5}
+.row:last-child{border-bottom:0}button.row:active{opacity:.5}
 .rowic{width:30px;height:30px;border-radius:50%;background:#e9e9ee;display:grid;place-items:center;flex-shrink:0}
 .row.sm{min-height:48px}
 .avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;font-size:17px;flex-shrink:0}
@@ -85,6 +89,10 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 .row.sm .rowtitle{font-weight:400}
 .detail{font-size:14px;color:#8e8e93;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rt{font-size:13px;color:#8e8e93}.chev{font-size:20px;color:#c4c4c8}
+.atime{font-size:44px;font-weight:300;letter-spacing:-1px;line-height:1.1}.atime small{font-size:20px;margin-left:4px}
+.tg{width:51px;height:31px;border:0;border-radius:16px;background:#34c759;position:relative;flex-shrink:0}
+.tg::after{content:"";position:absolute;top:2px;right:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0004}
+.tg.shake{animation:shake .4s}
 .photos{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}
 .slot{aspect-ratio:3/4;border:0;padding:0;overflow:hidden;background:#dcdce1;border-radius:4px;position:relative}
 .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -134,7 +142,7 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 @keyframes blk{0%,92%,100%{opacity:0}93%{opacity:.9}94%{opacity:0}95%{opacity:.65}96%{opacity:0}}
 .loc{background:#0c0c0e;border:1px solid #1d1d22;border-radius:12px;padding:16px;margin-top:14px}
 .loc small{color:#66666d;font-size:13px}
-.glitch{display:inline-block;margin-top:6px;font-size:40px;font-weight:700;letter-spacing:6px;color:#e4e4e4;text-shadow:0 0 10px #ffffff33;animation:flick 2.8s steps(1) infinite}
+.glitch{display:inline-block;margin-top:6px;font-size:22px;font-weight:400;letter-spacing:4px;color:#e4e4e4;text-shadow:0 0 8px #ffffff33;animation:flick 2.8s steps(1) infinite}
 @keyframes flick{0%{opacity:1}6%{opacity:.15}7%{opacity:1}30%{opacity:.6}31%{opacity:0}33%{opacity:1}34%{opacity:.2}35%{opacity:1}62%{opacity:.3}63%{opacity:1}64%{opacity:0}66%{opacity:1}100%{opacity:1}}
 .ending{z-index:30;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#000}
 .ending p{font-size:19px;letter-spacing:1px}.endtime{position:absolute;bottom:50px;color:#777;font-size:13px;letter-spacing:4px}
@@ -159,7 +167,7 @@ button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:tran
 <div class="notifs" id="notifs"></div>
 <div class="lockbottom">
 <button class="circle" onclick="toast('손전등','항상 주변은 어두워야 합니다')" aria-label="손전등"><svg viewBox="0 0 24 24"><path d="M8 2h8v4l-2 3v13h-4V9L8 6z"/></svg></button>
-<button class="circle" onclick="toast('카메라','꿈 속은 기록할 수 없어요.')" aria-label="카메라"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5" fill="#33364a"/></svg></button>
+<button class="circle" onclick="toast('카메라','꿈 속은 기록할 수 없어요.')" aria-label="카메라" style="margin-left:auto"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5" fill="#33364a"/></svg></button>
 </div>
 <div class="swipe">위로 쓸어 올려서 열기</div>
 <button class="bar-hitbox" onclick="showPasscode()" aria-label="잠금 해제"><span class="bar"></span></button>
@@ -206,6 +214,23 @@ var PHOTOS=[
   'images/photo2.jpeg',
   'images/photo3.jpeg',
   'images/photo4.jpeg'
+];
+
+// 잠금화면에 이미 와 있는 알림 (위에 있을수록 최신)
+// app: messages / phone / clock 중 하나, title: 굵은 글씨, body: 내용, time: 시간 표시
+// open: 알림을 탭하고 암호를 풀면 열리는 곳 → 'thread:W' (W와의 대화), 'thread:J', 'app:phone', 'app:clock' ...
+var NOTIFS=[
+  {app:'messages',title:'W',body:'빨리 일어나. 거기 오래 있으면 안 돼.',time:'3분 전',open:'thread:W'},
+  {app:'clock',title:'알람',body:'일어나',time:'오전 3:17',open:'app:clock'},
+  {app:'messages',title:'J',body:'그래도 괜찮아. 다른 건 잊어도 돼.',time:'어제',open:'thread:J'},
+  {app:'phone',title:'W',body:'부재중 전화',time:'어제',open:'app:phone'}
+];
+
+// 시계 앱 알람 (끌 수 없음): [시각, 오전/오후, 이름]
+var ALARMS=[
+  ['3:17','오전','일어나'],
+  ['3:17','오전','아직도 자고 있어?'],
+  ['3:17','오전','빨리']
 ];
 
 // 사파리 검색 기록: ['구간 이름', ['검색어', '검색어', ...]]
@@ -285,7 +310,7 @@ var required=['photo','message','note','call','setting'];
 
 var clues=new Set(),entered='',wrong=0,curApp=null,usedSug={J:{},W:{}};
 var callT=null,callK=null,callN={J:0,W:0},actx=null,ringNode=null;
-var missed=false,incT=[];
+var missed=false,incT=[],lockNotifs=NOTIFS.slice(),pendingOpen=null;
 var phone=$('phone');
 var PHONE_PATH='M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z';
 
@@ -308,8 +333,43 @@ var apps=[
 ['archive','Archive','linear-gradient(#3a3a44,#17171c)',svg('<rect x="5" y="10" width="14" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="#fff" stroke-width="2"/>')]
 ];
 var DOCK=['phone','messages','safari','photos'];
-function mk(a){return '<button class="appbtn" data-app="'+a[0]+'"><span class="appicon" style="background:'+a[2]+'">'+a[3]+'</span><span class="appname">'+a[1]+'</span></button>'}
+function mk(a){return '<button class="appbtn" data-app="'+a[0]+'"><span class="appicon" style="background:'+a[2]+'">'+a[3]+'</span><span class="appname">'+a[1]+'</span><span class="badge" data-b="'+a[0]+'"></span></button>'}
 function findApp(id){return apps.filter(function(a){return a[0]===id})[0]}
+
+/* ----- 잠금화면 알림 / 배지 ----- */
+function renderNotifs(newIdx){
+  $('notifs').innerHTML=lockNotifs.map(function(n,i){
+    var a=findApp(n.app);
+    return '<button class="notif'+(i===newIdx?' new':'')+'" onclick="tapNotif('+i+')"><span class="ni" style="background:'+a[2]+'">'+a[3]+'</span><span class="nt"><b>'+esc(n.title)+'</b>'+esc(n.body)+'</span><small>'+esc(n.time)+'</small></button>';
+  }).join('');
+}
+function renderBadges(){
+  document.querySelectorAll('.badge').forEach(function(b){
+    var id=b.getAttribute('data-b');
+    if(id!=='messages'&&id!=='phone'){b.classList.remove('on');return}
+    var n=lockNotifs.filter(function(x){return x.app===id}).length;
+    b.textContent=n;b.classList.toggle('on',n>0);
+  });
+}
+function clearNotifs(id){
+  lockNotifs=lockNotifs.filter(function(n){return n.app!==id});
+  renderNotifs();renderBadges();
+}
+function tapNotif(i){
+  pendingOpen=lockNotifs[i].open||null;
+  showPasscode();
+}
+function runPending(){
+  var p=pendingOpen;pendingOpen=null;
+  if(!p)return;
+  setTimeout(function(){
+    var a=p.split(':'),id=a[0]==='thread'?'messages':a[1];
+    var el=document.querySelector('[data-app="'+id+'"] .appicon');
+    if(!el)return;
+    openApp(id,el);
+    if(a[0]==='thread')thread(a[1]);
+  },550);
+}
 
 /* ----- 잠금화면: 알 수 없음 전화 → 부재중 알림 ----- */
 function showIncoming(){
@@ -330,7 +390,8 @@ function endIncoming(){
 function addMissed(){
   if(missed)return;
   missed=true;
-  $('notifs').innerHTML='<button class="notif" onclick="showPasscode()"><span class="ni"><svg viewBox="0 0 24 24"><path d="'+PHONE_PATH+'"/></svg></span><span class="nt"><b>전화</b>알 수 없음<br>부재중 전화</span><small>지금</small></button>';
+  lockNotifs.unshift({app:'phone',title:'알 수 없음',body:'부재중 전화',time:'지금',open:'app:phone'});
+  renderNotifs(0);renderBadges();
 }
 function startIncomingTimer(){
   incT.forEach(clearTimeout);
@@ -341,7 +402,7 @@ function startIncomingTimer(){
 function switchScreen(id){
   ['lock','passcodeScreen','home','ending'].forEach(function(s){$(s).classList.toggle('active',s===id)});
 }
-function showLock(){closeApp(true);switchScreen('lock')}
+function showLock(){pendingOpen=null;closeApp(true);switchScreen('lock')}
 function showHome(){switchScreen('home')}
 function showPasscode(){entered='';updateDots();$('passError').textContent='';switchScreen('passcodeScreen')}
 function updateDots(){
@@ -352,7 +413,7 @@ function pressDigit(n){
   entered+=n;updateDots();
   if(entered.length===4){
     setTimeout(function(){
-      if(entered===PASSCODE){wrong=0;showHome()}
+      if(entered===PASSCODE){wrong=0;showHome();runPending()}
       else{
         wrong++;entered='';updateDots();
         var d=$('passDots');d.classList.remove('shake');void d.offsetWidth;d.classList.add('shake');
@@ -370,6 +431,7 @@ function setPage(html){
 function openApp(id,el){
   if(id==='camera'){toast('카메라','꿈 속은 기록할 수 없어요');return}
   if(id==='archive'&&required.every(function(c){return clues.has(c)})){switchScreen('ending');return}
+  clearNotifs(id);
   var p=phone.getBoundingClientRect(),r=el.getBoundingClientRect(),s=$('appscreen');
   s.style.transformOrigin=(r.left+r.width/2-p.left)+'px '+(r.top+r.height/2-p.top)+'px';
   s.classList.toggle('dk',id==='maps');
@@ -404,7 +466,7 @@ function row(t,d,ic,act,rt,cls){
 }
 function av(k){return '<span class="avatar" style="background:'+CONTACTS[k].color+'">'+k+'</span>'}
 var unk='<span class="avatar" style="background:#c7c7cc">?</span>';
-function esc(s){return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
 function render(id){
   var v={photos:photosView,messages:messagesView,phone:phoneView,safari:safariView,maps:mapsView,notes:notesView,clock:clockView,contacts:contactsView,settings:settingsView,archive:archiveView};
   (v[id]||clockView)();
@@ -605,7 +667,16 @@ function archiveView(){
   setPage(tb('홈')+ttl('Archive')+'<div class="bigcenter"><div style="font-size:55px">🔒</div><h2>잠겨 있음</h2><p>사진, 메시지, 메모, 전화 기록, 그리고 설정의 날짜 및 시간에서 단서를 찾아야 열 수 있어요.<br>단서 '+n+'/'+required.length+'</p></div>');
 }
 function clockView(){
-  setPage(tb('홈')+ttl('시계')+grp([row('세계 시계','서울 +9시간'),row('알람','알람 없음'),row('스톱워치','00:00.00'),row('타이머','시간 설정')])+'<div class="bigcenter" style="font-size:52px;color:#222;font-weight:300">03:17<p>?unknown?</p></div>');
+  setPage(tb('홈')+ttl('시계')+grp([row('세계 시계','서울 +9시간'),row('알람',ALARMS.length+'개 켜짐','','alarmView()'),row('스톱워치','00:00.00'),row('타이머','시간 설정')])+'<div class="bigcenter" style="font-size:52px;color:#222;font-weight:300">03:17<p>?unknown?</p></div>');
+}
+function alarmView(){
+  setPage(tb('시계','clockView()')+ttl('알람')+grp(ALARMS.map(function(a){
+    return '<div class="row"><span class="rowmain"><div class="atime">'+esc(a[0])+'<small>'+esc(a[1])+'</small></div><div class="detail">'+esc(a[2])+'</div></span><button class="tg" aria-label="알람" onclick="alarmTap(this)"></button></div>';
+  })));
+}
+function alarmTap(el){
+  toast('알람','알람을 끌 수 없어요.');
+  el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');
 }
 
 /* ----- 지도 (UNFIND) ----- */
@@ -616,7 +687,9 @@ function mapsView(){
 /* ----- 시작 ----- */
 function restart(){
   clues.clear();wrong=0;usedSug={J:{},W:{}};callN={J:0,W:0};
-  missed=false;$('notifs').innerHTML='';$('incoming').classList.remove('on');
+  missed=false;lockNotifs=NOTIFS.slice();pendingOpen=null;
+  $('incoming').classList.remove('on');
+  renderNotifs();renderBadges();
   startIncomingTimer();
   showLock();
 }
@@ -642,6 +715,7 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Enter'&&$('reply'))sendReply();
   if(e.key==='Escape'){if(curApp)closeApp();else showLock()}
 });
+renderNotifs();renderBadges();
 startIncomingTimer();
 </script>
 </body>
