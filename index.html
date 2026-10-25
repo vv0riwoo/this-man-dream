@@ -200,8 +200,8 @@ var PHOTOS=[
 // 위에 있는 구간, 그리고 구간 안에서 위에 있는 검색어일수록 최근 기록이에요.
 var SEARCHES=[
   ['오늘',['꿈속세계','디스맨 괴담','꿈 탈출','자각몽','꿈에서 안 깨어날 때']],
-  ['어제',['같은 꿈이 계속 반복되는 이유','꿈속에서 죽으면 어떻게 되나','가위눌림 원인','꿈에 계속 나오는 낯선 남자','검정 옷 남자 꿈']],
-  ['지난주',['꿈과 현실 구분하는 법','문 잠갔는데 아침에 열려 있음','새벽에 문 열리는 소리']]
+  ['어제',['같은 꿈이 계속 반복되는 이유','꿈속에서 죽으면 어떻게 되나','가위눌림 원인','꿈에 계속 나오는 남자','검정 옷 남자 꿈']],
+  ['지난주',['꿈과 현실 구분하는 법','창문 잠갔는데 아침에 열려 있음','새벽에 이상한 소리']]
 ];
 
 // 이미 진행된 문자 내역: ['in'=상대, 'out'=나, '내용', '날짜표시(선택)']
@@ -326,7 +326,7 @@ function setPage(html){
   c.classList.remove('push');void c.offsetWidth;c.classList.add('push');c.scrollTop=0;
 }
 function openApp(id,el){
-  if(id==='camera'){toast('카메라','지금은 열 수 없어요.');return}
+  if(id==='camera'){toast('카메라','꿈 속은 기록할 수 없어요');return}
   if(id==='archive'&&required.every(function(c){return clues.has(c)})){switchScreen('ending');return}
   var p=phone.getBoundingClientRect(),r=el.getBoundingClientRect(),s=$('appscreen');
   s.style.transformOrigin=(r.left+r.width/2-p.left)+'px '+(r.top+r.height/2-p.top)+'px';
@@ -501,6 +501,7 @@ function ringTone(){
     var t=actx.currentTime;
     [0,2.4].forEach(function(s){g.gain.setValueAtTime(0.08,t+s);g.gain.setValueAtTime(0,t+s+1.2)});
     ringNode=g;
+     
   }catch(e){}
 }
 function stopRing(){
@@ -536,14 +537,14 @@ function endCall(manual){
 /* ----- 기타 앱 ----- */
 function notesView(){
   setPage(tb('홈')+ttl('메모')+
-  '<button class="note" onclick="noteDetail(1)"><strong>꿈 기록</strong>분명히 어젯밤에 문을 잠갔다.<br><small>오늘 오전 3:17</small></button>'+
+  '<button class="note" onclick="noteDetail(1)"><strong>꿈 일기</strong>오늘 꿈은 기억나지 않는데…<br><small>오늘 오전 3:17</small></button>'+
   '<button class="note" onclick="noteDetail(2)"><strong>잊어버린 것</strong>목소리는 기억나는데…<br><small>10월 20일</small></button>'+
   '<button class="note" onclick="noteDetail(3)"><strong>제목 없음</strong>창밖에는 아무것도 없다.<br><small>10월 18일</small></button>');
 }
 function noteDetail(n){
   clues.add('note');
   var d={
-    1:['꿈 일기','오늘 꿈은 기억나지 않는데 뭔가 이상한 기분이 든다.\n\n아침이 되면 현관이 늘 열려 있다.\n\n요즘 잠이 부족한가'],
+    1:['꿈 일기','오늘 꿈은 기억나지 않는데 뭔가 이상한 기분이 든다.\n\n아침이 되면 창문이 늘 열려 있다.\n\n요즘 잠이 부족한가'],
     2:['잊어버린 것','목소리는 기억나는데\n얼굴이 떠오르지 않는다.\n\n검은 옷과 낮은 목소리.\n분명 누가 있었다.'],
     3:['제목 없음','창밖에는 아무것도 없다.\n\n커튼은 열지 말 것.\n누군가가 싫어한다.']
   }[n];
